@@ -6,6 +6,10 @@ import inquirer from 'inquirer';
 import JSZip from 'jszip';
 import { basename, parse, resolve } from 'path';
 import { TSConfigJSON } from 'types-tsconfig';
+import updateNotifier from 'update-notifier';
+import packageJson from './package.json';
+
+updateNotifier({ pkg: packageJson }).notify();
 
 const templateFile = `${__dirname}/template`;
 
@@ -110,7 +114,7 @@ async function getProjectInfo(root: string): Promise<ProjectInfo> {
 
       const scripts = getScripts(await main.async('string'));
       if (scripts.length == 0) {
-        throw yellowBright('No script found, please create a JavaScript script in Meta Spark Studio.');
+        throw yellowBright('No script found, please create a JavaScript script in Meta Spark Studio and save it.');
       }
 
       const { outfile } = await inquirer.prompt<{ outfile: string }>([{
