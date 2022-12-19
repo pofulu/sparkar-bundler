@@ -29,11 +29,8 @@ const baseConfig = {
 };
 
 type ProjectInfo = {
-  /** e.g. `/Users/name/Desktop/myProject/scripts/tsconfig.json` */
   tsconfig: string;
-  /** e.g. `myProject.arproj` */
   projectFile: string;
-  /** e.g. `scripts/script.js` */
   outfile: string;
 }
 
@@ -106,7 +103,7 @@ async function getProjectInfo(root: string): Promise<ProjectInfo> {
       }
 
       // get script output
-      const zip = await JSZip.loadAsync(await readFile(resolve(root, projectFilePath)));
+      const zip = await JSZip.loadAsync(await readFile(projectFilePath));
       const main = zip.file('main.json');
       if (!main) {
         throw redBright('Invalid project file, is this file broken?');
@@ -117,7 +114,7 @@ async function getProjectInfo(root: string): Promise<ProjectInfo> {
         throw yellowBright('No script found, please create a JavaScript script in Meta Spark Studio and save it.');
       }
 
-      const { outfile } = await inquirer.prompt<{ outfile: string }>([{
+      const result = await inquirer.prompt<{ outfile: string }>([{
         type: 'list',
         name: 'outfile',
         message: 'Which script do you want to output in Meta Spark Studio? (will OVERWRITE it)',
@@ -126,8 +123,8 @@ async function getProjectInfo(root: string): Promise<ProjectInfo> {
 
       return {
         tsconfig: resolve(root, 'scripts', 'tsconfig.json'),
-        projectFile,
-        outfile
+        projectFile: projectFilePath,
+        outfile: resolve(root, result.outfile)
       };
     }
   }
@@ -145,7 +142,6 @@ async function getProjectInfo(root: string): Promise<ProjectInfo> {
     if (!(await stat(path)).isDirectory()) {
       continue;
     }
-
     const info = await getInfo(path);
     if (info != undefined) {
       return info;
