@@ -1,8 +1,6 @@
 # Spark AR Bundler
 
-Bundler TypeScript for Meta Spark Studio based on esbuild. This tool resolve the type definition of Meta Spark API, so the IntelliSense (VSCode) will works for both Meta Spark API and node modules.
-
-
+Bundler TypeScript for Meta Spark Studio based on [esbuild](https://github.com/evanw/esbuild). This tool resolve the type definition of Meta Spark API, so the IntelliSense (VSCode) will works for both Meta Spark API and node modules.
 
 ## Usage
 
@@ -12,7 +10,7 @@ Bundler TypeScript for Meta Spark Studio based on esbuild. This tool resolve the
    npm i -g sparkar-bundler
    ```
 
-2. Create a empty project → Save it → Create a JavaScript
+2. Create a empty project → Save it → Create a JavaScript → **REMEMBER TO SAVE**
 
 3. Open terminal in your target Meta Spark project:
 
@@ -22,12 +20,6 @@ Bundler TypeScript for Meta Spark Studio based on esbuild. This tool resolve the
 
 3. The command line tool will guide you select a script target for outputting the bundled result.
 4. If everything is ready, you will see `hello, world` printed in Meta Spark Studio.
-
-
-
-## How it works
-
-This bundler will transpile the `./src/main.ts` to the script you selected in Meta Spark Studio.
 
 
 
@@ -58,7 +50,7 @@ node-project/
     └── ...  
 ```
 
-▲ This is the structure that wrapped the sparkar project with a parent directory, it's useful when you want to separate the spark ar project from the original code.
+▲ This is the structure that wrapped the sparkar project with a parent directory, it's useful when you want to separate the spark ar project from the source code.
 
 
 
