@@ -25,7 +25,7 @@
     "template"
   ],
   "scripts": {
-    "build": "esbuild index.ts --bundle --minify --external:esbuild --platform=node --inject:./import-meta-url.js --define:import.meta.url=import_meta_url --outfile=index.js"
+    "build": "node build.js"
   },
   "dependencies": {
     "esbuild": "^0.16.8"
