@@ -1,6 +1,6 @@
 {
   "name": "sparkar-bundler",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "TypeScript bundler for Meta Spark Studio",
   "keywords": [
     "javascript",
