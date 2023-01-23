@@ -100,7 +100,7 @@ export async function generateTypeScriptConfig(tsconfig: {
     baseUrl?: string;
     paths?: { [key: string]: string[] };
   }
-}) {
+}, outputDir: string) {
   const baseUrl = tsconfig.compilerOptions?.baseUrl;
   const paths = tsconfig.compilerOptions?.paths?.['*'] ?? [];
 
@@ -109,7 +109,7 @@ export async function generateTypeScriptConfig(tsconfig: {
     baseConfig.compilerOptions.paths['*'].push(path);
   }
 
-  const tsconfigOutputPath = resolve('src', 'tsconfig.json');
+  const tsconfigOutputPath = resolve(outputDir, 'tsconfig.json');
   await mkdir(parse(tsconfigOutputPath).dir, { recursive: true });
   await writeFile(tsconfigOutputPath, JSON.stringify(baseConfig, null, 2));
 

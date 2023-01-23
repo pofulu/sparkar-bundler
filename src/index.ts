@@ -16,23 +16,28 @@ void async function main() {
   const { flags } = meow(commandLineUsage(
     [{
       optionList: [
-        { name: 'help', alias: 'h', typeLabel: ' ', description: `Print command line usgae.` },
-        { name: 'tsconfig', alias: 't', typeLabel: ' ', description: `Generate tsconfig.json to ./src by Spark AR.` }
+        { name: 'help', alias: 'h', typeLabel: ' ', description: `Print command line usage.` },
+        { name: 'tsconfig', alias: 't', typeLabel: '[output]', description: `Generate tsconfig.json by Spark AR, default output is ./src.` }
       ]
     }]),
     {
       importMeta: { url: import.meta.url },
       flags: {
         help: { alias: 'h' },
-        tsconfig: { alias: 't' }
+        tsconfig: { alias: 't', type: 'string' }
       },
     })
+
 
   try {
     const projectPath = resolve();
     if (Object.keys(flags).length == 0) {
       await interactiveMode(projectPath);
-    } else if (flags.tsconfig) {
+      return;
+    }
+
+    if (flags.tsconfig != undefined) {
+      const outputDir = String(flags.tsconfig).trim() == '' ? 'src' : flags.tsconfig;
       const project = await fuzzyParseSparkARProject(projectPath);
 
       if (project == undefined) {
@@ -44,7 +49,7 @@ void async function main() {
       }
 
       const tsconfig = await project.tsconfig.json();
-      await generateTypeScriptConfig(tsconfig);
+      await generateTypeScriptConfig(tsconfig, outputDir);
     }
   } catch (error) {
     console.log(error);
