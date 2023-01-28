@@ -1,8 +1,7 @@
 import { build } from "esbuild";
-import { cp, mkdir, readdir, readFile, stat, writeFile } from "fs/promises";
+import { mkdir, readdir, readFile, stat, writeFile } from "fs/promises";
 import { existsSync } from "fs";
 import { basename, parse, resolve } from "path";
-import { templateFile } from ".";
 import { bold, greenBright, redBright, yellowBright } from "ansi-colors";
 import JSZip from "jszip";
 import { getImporetedScripts } from "./sparkar-parser/internal";
@@ -16,13 +15,18 @@ type ProjectInfo = {
   outfile: string;
 }
 
+export const template = `${__dirname}/../template/src/main.ts`;
+
 export async function interactiveMode(projectPath: string) {
+  const { source } = await inquirer.prompt<{ source: string }>({ type: 'input', name: 'source', message: 'Which source do you want to bundle? (Will be created automatically if it does not exist)', default: 'src/main.ts' })
+  const defaultEntry = resolve(projectPath, source);
+  if (!existsSync(defaultEntry)) {
+    await mkdir(parse(defaultEntry).dir, { recursive: true });
+    await writeFile(defaultEntry, await readFile(template))
+  }
+
   const projectInfo = await getProjectInfo(projectPath);
   const external = await generateTypeScriptConfig(projectInfo);
-  const defaultEntry = resolve(projectPath, 'src', 'main.ts');
-  if (!existsSync(defaultEntry)) {
-    await cp(templateFile, projectPath, { recursive: true });
-  }
 
   await build({
     entryPoints: [defaultEntry],
