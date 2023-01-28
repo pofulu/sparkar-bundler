@@ -7,6 +7,7 @@ import JSZip from "jszip";
 import { getImporetedScripts } from "./sparkar-parser/internal";
 import inquirer from "inquirer";
 import type { TSConfigJSON } from "types-tsconfig";
+import { getSparkARProjectFile } from './sparkar-parser/utils';
 import baseConfig from "./sparkar-parser/baseConfig";
 
 type ProjectInfo = {
@@ -86,8 +87,7 @@ async function generateTypeScriptConfig({ tsconfig, outfile }: ProjectInfo) {
 
 async function getProjectInfo(root: string): Promise<ProjectInfo> {
   const getInfo = async (root: string) => {
-    const files = await readdir(root);
-    const projectFile = files.find(file => parse(file).ext == '.arproj');
+    const projectFile = await getSparkARProjectFile(root);
 
     if (projectFile != undefined) {
       const projectFilePath = resolve(root, projectFile);
