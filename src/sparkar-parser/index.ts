@@ -5,7 +5,7 @@ import JSZip from "jszip";
 import { basename, dirname, extname, parse, resolve } from "path";
 import { TSConfigJSON } from "types-tsconfig";
 import baseConfig from "./baseConfig";
-import { getImporetedScripts } from "./internal";
+import { getImportedScripts } from "./internal";
 import { getSparkARProjectFile } from "./utils";
 
 type SparkARScript = {
@@ -75,7 +75,7 @@ export async function parseSparkARProject(directory: string): Promise<SparkARPro
   })();
 
   // parse sparkar scripts
-  const importedScripts = getImporetedScripts(await parseProjectJSON(projectFilePath)).map(p => basename(p));
+  const importedScripts = getImportedScripts(await parseProjectJSON(projectFilePath)).map(p => basename(p));
   const scripts = (await readdir(resolve(directory, 'scripts')))
     .filter(file => extname(file) == '.js' || extname(file) == '.ts');
 
