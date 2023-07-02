@@ -1,4 +1,4 @@
-export function getImporetedScripts(jsonString: string) {
+export function getImportedScripts(jsonString: string) {
   const regex: RegExp = /"assetLocator":\s*"([^"]*)"/g;
   const values: string[] = [];
 
