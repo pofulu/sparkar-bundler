@@ -99,13 +99,12 @@ async function getProjectInfo(root: string): Promise<ProjectInfo> {
       }
 
       // get script output
-      const zip = await JSZip.loadAsync(await readFile(projectFilePath));
-      const main = zip.file('main.json');
+      const main = existsSync(projectFilePath);
       if (!main) {
         throw redBright('Invalid project file, is this file broken?');
       }
 
-      const scripts = getImporetedScripts(await main.async('string'));
+      const scripts = getImportedScripts(await readFile(projectFilePath, 'utf-8'));
       if (scripts.length == 0) {
         throw yellowBright(`No script found, please create a JavaScript script in Meta Spark Studio and save it.`);
       }
